@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: gv_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama
+    
+  app:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    container_name: gv_app
+    volumes:
+      - ./documents:/app/documents
+      - ./src/.env:/app/.env
+      - ./src/app.py:/app/app.py
+      - ./src/utils.py:/app/utils.py
+      - ./src/ui.py:/app/ui.py
+    ports:
+      - "8501:8501"
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
