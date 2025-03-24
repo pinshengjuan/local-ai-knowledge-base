@@ -29,7 +29,8 @@ def main():
                 config["CHUNK_OVERLAP"], 
                 config["EMBEDDING_MODEL"]
             )
-            qa_chain = setup_qa_chain(llm, vector_store, get_prompt(), config["RETRIEVER_K"])
+            prompt = get_prompt(config["PROMPT_INSTRUCTION"])
+            qa_chain = setup_qa_chain(llm, vector_store, prompt, config["RETRIEVER_K"])
         mode_text = "Using Knowledge Base"
     else:
         qa_chain = llm

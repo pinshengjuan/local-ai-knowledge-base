@@ -21,20 +21,21 @@ def load_config():
         "EMBEDDING_MODEL": os.getenv("EMBEDDING_MODEL"),
         "CHUNK_SIZE": 500,
         "CHUNK_OVERLAP": 250,
-        "RETRIEVER_K": 5
+        "RETRIEVER_K": 5,
+        "PROMPT_INSTRUCTION": os.getenv("PROMPT_INSTRUCTION")
     }
 
 # Custom prompt for penalty-related questions
-def get_prompt():
-    prompt_template = """
-    You are an expert in interpreting legal documents. Use the following context from the documents to answer the question. If the context contains information about fines or penalties, extract the specific amount or details. If no specific amount is found, say so and provide any relevant information available.
+def get_prompt(prompt_instruction):
+    prompt_template = f"""
+{prompt_instruction}
 
-    Context: {context}
+Context: {{context}}
 
-    Question: {question}
+Question: {{question}}
 
-    Answer:
-    """
+Answer:
+"""
     return PromptTemplate(template=prompt_template, input_variables=["context", "question"])
 
 # --- Document Processing ---
