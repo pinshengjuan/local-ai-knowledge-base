@@ -46,7 +46,7 @@ def load_knowledge_base(files_dir, chunk_size, chunk_overlap, embedding_model):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     chunks = text_splitter.split_documents(documents)
     
-    embeddings = OllamaEmbeddings(model="nomic-embed-text")
+    embeddings = OllamaEmbeddings(model=embedding_model)
     vector_store = FAISS.from_documents(chunks, embeddings)
     return vector_store
 
