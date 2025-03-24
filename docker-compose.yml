@@ -26,3 +26,4 @@ services:
       - ollama
     environment:
       - OLLAMA_HOST=http://ollama:11434
+      - FILES_DIR=./documents

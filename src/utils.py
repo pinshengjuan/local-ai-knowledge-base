@@ -16,7 +16,7 @@ load_dotenv()
 def load_config():
     return {
         "OLLAMA_HOST": os.getenv("OLLAMA_HOST", "http://localhost:11434"),
-        "FILES_DIR": "./documents",
+        "FILES_DIR": os.getenv("FILES_DIR"),
         "MODEL_NAME": os.getenv("MODEL_NAME"),
         "EMBEDDING_MODEL": os.getenv("EMBEDDING_MODEL"),
         "CHUNK_SIZE": 500,
