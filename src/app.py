@@ -13,6 +13,29 @@ def main():
 
     # Initialize session state
     if "conversation" not in st.session_state:
+        # st.session_state.conversation is a list of tuples, where each tuple contains:
+        # (
+        #   'prompt': str,  # The user's query or input
+        #   'answer': str,  # The AI's response
+        #   [
+        #       Document(metadata={'source': str, 'page': int}, page_content=str),  # List of source documents
+        #       Document(metadata={'source': str, 'page': int}, page_content=str),  # List of source documents
+        #       ...
+        #   ],
+        #   [
+        #       {
+        #           'file_path': str,  # Path to the document
+        #           'page_number': int,  # Page number in the document
+        #           'snapshot': str  # Snapshot identifier
+        #       },
+        #       {
+        #           'file_path': str,  # Path to the document
+        #           'page_number': int,  # Page number in the document
+        #           'snapshot': str  # Snapshot identifier
+        #       },
+        #       ...
+        #   ]
+        # )
         st.session_state.conversation = []
     if "input_key" not in st.session_state:
         st.session_state.input_key = 0
