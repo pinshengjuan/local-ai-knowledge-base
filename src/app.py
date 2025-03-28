@@ -2,7 +2,7 @@
 import os
 import streamlit as st
 from utils import load_config, get_prompt, load_knowledge_base, init_llm, setup_qa_chain, process_query
-from ui import display_mode, display_conversation, render_input_form
+from ui import display_mode, display_conversation, toggle_knowledge_base, render_input_form
 
 # --- Main Application ---
 def main():
@@ -39,6 +39,7 @@ def main():
     # Display UI elements
     display_mode(mode_text)
     display_conversation(st.session_state.conversation)
+    toggle_knowledge_base(st.session_state.use_knowledge_base)
 
     # Render input form in the main flow
     query, submitted = render_input_form(st.session_state.input_key, st.session_state.use_knowledge_base)

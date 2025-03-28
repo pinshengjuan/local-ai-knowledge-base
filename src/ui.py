@@ -59,13 +59,14 @@ def display_conversation(conversation):
             # st.markdown("---")
         st.markdown('</div>', unsafe_allow_html=True)
 
-def render_input_form(input_key, use_knowledge_base):
-    # Toggle and input form in the main flow
+def toggle_knowledge_base(use_knowledge_base):
     st.session_state.use_knowledge_base = st.toggle(
         "Use Knowledge Base",
         value=use_knowledge_base,
         help="Toggle to use your documents or query the LLM directly."
     )
+
+def render_input_form(input_key):
     with st.form(key="query_form", clear_on_submit=True):
         query = st.text_input(
             "Ask a question:",
