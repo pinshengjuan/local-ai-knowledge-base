@@ -81,7 +81,8 @@ def display_conversation(conversation):
     # Display conversation in chat-like format
     with st.container():
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
-        for i, (question, answer) in enumerate(conversation):
+        for item in conversation:
+            query, answer, _, _ = item  # Use _ for unused variables
             # Align question to the right
             st.markdown(
                 f'<div class="question">'
