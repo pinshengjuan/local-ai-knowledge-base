@@ -1,5 +1,6 @@
 # src/utils.py
 import os
+import io
 import logging
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFDirectoryLoader
@@ -9,6 +10,8 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 import streamlit as st
+from PIL import Image, ImageDraw
+from pdf2image import convert_from_path
 
 # Load environment variables from .env file
 load_dotenv()
@@ -67,6 +70,18 @@ def setup_qa_chain(llm, vector_store, prompt, retriever_k):
         retriever=vector_store.as_retriever(search_kwargs={"k": retriever_k}),
         chain_type_kwargs={"prompt": prompt}
     )
+
+def generate_pdf_snapshot(file_path, page_number):
+    try:
+        # Convert PDF page to image
+        image = convert_from_path(pdf_path=file_path, first_page=page_number, last_page=page_number, fmt="png", dpi=600)
+        img_byte_arr = io.BytesIO()
+        image[0].save(img_byte_arr, format="PNG")
+        return img_byte_arr.getvalue()
+    except FileNotFoundError:
+        raise FileNotFoundError(f"PDF file not found at: {file_path}")
+    except Exception as e:
+        raise Exception(f"Error generating PDF snapshot: {str(e)}")
 
 # --- Query Handling ---
 def process_query(query, llm, qa_chain, use_knowledge_base):
