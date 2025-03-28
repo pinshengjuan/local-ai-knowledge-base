@@ -51,7 +51,7 @@ def main():
     toggle_knowledge_base(st.session_state.use_knowledge_base)
 
     # Render input form in the main flow
-    query, submitted = render_input_form(st.session_state.input_key, st.session_state.use_knowledge_base)
+    query, submitted = render_input_form(st.session_state.input_key)
     if submitted and query:
         result = process_query(query, llm, qa_chain, st.session_state.use_knowledge_base)
         if result:
