@@ -3,9 +3,25 @@ import streamlit as st
 
 # --- UI Components ---
 def display_mode(mode_text):
+    """
+    Display the current mode of the application.
+
+    Args:
+        mode_text (str): The text to display for the current mode.
+    """
     st.write(f"**Mode:** {mode_text}")
 
 def display_relevant(conversation):
+    """
+    Display relevant document sections in the sidebar.
+
+    Args:
+        conversation (list): List of tuples containing query, answer, source_docs, and snapshots.
+        container (st.container): The Streamlit container to display the relevant sections.
+    
+    returns:
+        None
+    """
     for item in conversation:
         # Unpack the tuple: ignore prompt and answer, take source_docs and snapshots
         _, _, source_docs, snapshots = item  # Use _ for unused variables
@@ -25,6 +41,12 @@ def display_relevant(conversation):
                     st.warning(f"Snapshot unavailable for {snap['file_path']} (Page {snap['page_number']})")
 
 def display_conversation(conversation):
+    """
+    Display the conversation history in a chat-like format.
+
+    Args:
+        conversation (list): List of tuples containing query, answer, source_docs, and snapshots.
+    """
     # Custom CSS for alignment and styling
     st.markdown(
         """
@@ -56,6 +78,7 @@ def display_conversation(conversation):
         unsafe_allow_html=True
     )
 
+    # Display conversation in chat-like format
     with st.container():
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         for i, (question, answer) in enumerate(conversation):
@@ -79,6 +102,12 @@ def display_conversation(conversation):
         st.markdown('</div>', unsafe_allow_html=True)
 
 def toggle_knowledge_base(use_knowledge_base):
+    """
+    Toggle to use the knowledge base for answering questions.
+
+    Args:
+        use_knowledge_base (bool): Whether to use the knowledge base for answering.
+    """
     st.session_state.use_knowledge_base = st.toggle(
         "Use Knowledge Base",
         value=use_knowledge_base,
@@ -86,6 +115,15 @@ def toggle_knowledge_base(use_knowledge_base):
     )
 
 def render_input_form(input_key):
+    """
+    Render the input form for asking questions.
+
+    Args:
+        input_key (int): The key to identify the input form.
+    
+    Returns:
+        tuple: A tuple containing the query and the submission status.
+    """
     with st.form(key="query_form", clear_on_submit=True):
         query = st.text_input(
             "Ask a question:",

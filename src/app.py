@@ -6,13 +6,20 @@ from ui import display_mode, display_relevant, display_conversation, toggle_know
 
 # --- Main Application ---
 def main():
+    """
+    Main Streamlit application.
+
+    This function initializes the application, loads the configuration,
+    and sets up the LLM and knowledge base. It then displays the UI elements
+    and handles the conversation flow.
+    """
     st.title("Local AI Knowledge Base")
     
     # Load configuration
     config = load_config()
 
     # Initialize session state
-    if "conversation" not in st.session_state:
+    if "conversation" not in st.session_state: # To store conversation history
         # st.session_state.conversation is a list of tuples, where each tuple contains:
         # (
         #   'prompt': str,  # The user's query or input
@@ -37,9 +44,9 @@ def main():
         #   ]
         # )
         st.session_state.conversation = []
-    if "input_key" not in st.session_state:
+    if "input_key" not in st.session_state: # To manage the input form key
         st.session_state.input_key = 0
-    if "use_knowledge_base" not in st.session_state:
+    if "use_knowledge_base" not in st.session_state: # To toggle between LLM and knowledge base
         st.session_state.use_knowledge_base = True
 
     # Load LLM and setup chain
