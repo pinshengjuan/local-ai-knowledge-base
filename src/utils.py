@@ -45,6 +45,13 @@ Answer:
 """
     return PromptTemplate(template=prompt_template, input_variables=["context", "question"])
 
+def update_knowledge_base(vector_store, new_documents, embedding_model):
+    embeddings = OllamaEmbeddings(model=embedding_model)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=250)
+    chunks = text_splitter.split_documents(new_documents)
+    vector_store.add_documents(chunks)  # Incrementally add to existing FAISS index
+    return vector_store
+
 # --- Document Processing ---
 @st.cache_resource
 def load_knowledge_base(files_dir, chunk_size, chunk_overlap, embedding_model):

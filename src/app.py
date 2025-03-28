@@ -1,7 +1,7 @@
 # src/app.py
 import os
 import streamlit as st
-from utils import load_config, get_prompt, load_knowledge_base, init_llm, setup_qa_chain, process_query
+from utils import load_config, get_prompt, update_knowledge_base, load_knowledge_base, init_llm, setup_qa_chain, process_query
 from ui import display_mode, display_conversation, toggle_knowledge_base, render_input_form
 
 # --- Main Application ---
@@ -35,6 +35,15 @@ def main():
     else:
         qa_chain = llm
         mode_text = "Direct LLM Query"
+
+    # # File upload section
+    # uploaded_files = st.file_uploader("Upload new documents (PDFs)", type=["pdf"], accept_multiple_files=True)
+    # if uploaded_files:
+    #     with st.spinner("Updating knowledge base..."):
+    #         new_docs = [UnstructuredFileLoader(file).load()[0] for file in uploaded_files]
+    #         st.session_state.vector_store = update_knowledge_base(st.session_state.vector_store, new_docs, config["EMBEDDING_MODEL"])
+    #         qa_chain = setup_qa_chain(llm, st.session_state.vector_store, prompt, config["RETRIEVER_K"])
+    #     st.success("Knowledge base updated!")
 
     # Display UI elements
     display_mode(mode_text)
