@@ -5,6 +5,25 @@ import streamlit as st
 def display_mode(mode_text):
     st.write(f"**Mode:** {mode_text}")
 
+def display_relevant(conversation):
+    for item in conversation:
+        # Unpack the tuple: ignore prompt and answer, take source_docs and snapshots
+        _, _, source_docs, snapshots = item  # Use _ for unused variables
+        if snapshots:
+            for doc, snap in zip(source_docs, snapshots or []):
+                if snap and snap["snapshot"]:
+                    source_info = f"{doc.metadata.get('source', 'Unknown source')} (Page {doc.metadata.get('page', 'N/A')+1})" #+1 because page number is 1-indexed
+                    content_snippet = f"{doc.page_content[:300]}..."
+                    content = f'{source_info}:\n{content_snippet}'
+                    st.sidebar.write(content)
+                    st.sidebar.image(
+                        snap["snapshot"],
+                        caption=f"Page {snap['page_number']}, {snap['file_path']} ",
+                        use_column_width=True
+                    )
+                else:
+                    st.warning(f"Snapshot unavailable for {snap['file_path']} (Page {snap['page_number']})")
+
 def display_conversation(conversation):
     # Custom CSS for alignment and styling
     st.markdown(
