@@ -100,6 +100,24 @@ def process_query(query, llm, qa_chain, use_knowledge_base):
         if use_knowledge_base:
             rewritten_query = llm.invoke("Rewrite this question clearly: " + query).content
             result_dict = qa_chain({"query": rewritten_query})
-            return result_dict["result"]
+            # Generate snapshots for each source document
+            snapshots = []
+            for doc in result_dict["source_documents"]:
+                file_path = doc.metadata.get("source")
+                page_number = doc.metadata.get("page")
+                if file_path and page_number:
+                    snapshot = generate_pdf_snapshot(file_path, page_number+1) #+1 because page number is 1-indexed
+                    if snapshot:
+                        logger.info(f"Snapshot for {file_path}, page {page_number}: {snapshot is not None}")
+                        snapshots.append({
+                            "file_path": file_path,
+                            "page_number": page_number+1, #+1 because page number is 1-indexed
+                            "snapshot": snapshot
+                        })
+            return {
+                "answer": result_dict["result"],
+                "source_documents": result_dict["source_documents"],
+                "snapshots": snapshots
+            }
         else:
-            return llm.invoke(query).content
+            return {"answer": llm.invoke(query).content, "source_documents": [], "snapshots": []}
