@@ -75,7 +75,8 @@ def setup_qa_chain(llm, vector_store, prompt, retriever_k):
         llm=llm,
         chain_type="stuff",
         retriever=vector_store.as_retriever(search_kwargs={"k": retriever_k}),
-        chain_type_kwargs={"prompt": prompt}
+        chain_type_kwargs={"prompt": prompt},
+        return_source_documents=True
     )
 
 def generate_pdf_snapshot(file_path, page_number):
