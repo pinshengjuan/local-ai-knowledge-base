@@ -84,23 +84,14 @@ def display_conversation(conversation):
         for item in conversation:
             query, answer, _, _ = item  # Use _ for unused variables
             # Align question to the right
-            st.markdown(
-                f'<div class="question">'
-                f'<div class="message-box">'
-                f'{question}'
-                f'</div></div>',
-                unsafe_allow_html=True
-            )
+            query_html = f'<div class="question"><div class="message-box"> {query}'
+            st.markdown(query_html, unsafe_allow_html=True)
+
             # Align answer to the left
-            st.markdown(
-                f'<div class="answer">'
-                f'<div class="message-box">'
-                f'{answer}'
-                f'</div></div>',
-                unsafe_allow_html=True
-            )
-            # st.markdown("---")
-        st.markdown('</div>', unsafe_allow_html=True)
+            answer_html = f'<div class="answer"><div class="message-box"> {answer}'
+            st.markdown(answer_html, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def toggle_knowledge_base(use_knowledge_base):
     """
