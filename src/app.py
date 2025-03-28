@@ -78,7 +78,15 @@ def main():
     if submitted and query:
         result = process_query(query, llm, qa_chain, st.session_state.use_knowledge_base)
         if result:
-            st.session_state.conversation.append((query, result))
+            st.session_state.conversation.append(
+                (
+                    query, 
+                    result["answer"], 
+                    result["source_documents"], 
+                    result["snapshots"]
+                    )
+            )
+
             st.session_state.input_key += 1
             st.rerun()
 
