@@ -184,7 +184,7 @@ def process_query(query, llm, qa_chain, use_knowledge_base):
     with st.spinner("Thinking..."):
         if use_knowledge_base:
             rewritten_query = llm.invoke("Rewrite this question clearly: " + query).content
-            result_dict = qa_chain({"query": rewritten_query})
+            result_dict = qa_chain.invoke({"query": rewritten_query})
             # Generate snapshots for each source document
             snapshots = []
             for doc in result_dict["source_documents"]:

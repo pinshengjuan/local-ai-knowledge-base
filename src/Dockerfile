@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y poppler-utils
 # COPY src/requirements.txt .
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade faiss-cpu
+RUN pip install --upgrade pillow
+RUN pip install --upgrade pdf2image
 
 # Copy the application code
 COPY . .
