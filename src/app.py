@@ -48,6 +48,8 @@ def main():
         st.session_state.input_key = 0
     if "use_knowledge_base" not in st.session_state: # To toggle between LLM and knowledge base
         st.session_state.use_knowledge_base = True
+    if "latest_result" not in st.session_state:  # To store the latest result for sidebar display
+        st.session_state.latest_result = None
 
     # Load LLM and setup chain
     llm = init_llm(config["OLLAMA_HOST"], config["MODEL_NAME"])
@@ -66,6 +68,9 @@ def main():
         qa_chain = llm
         mode_text = "Direct LLM Query"
 
+    # Create a sidebar container to manage content
+    sidebar_container = st.sidebar.empty()
+
     # # File upload section
     # uploaded_files = st.file_uploader("Upload new documents (PDFs)", type=["pdf"], accept_multiple_files=True)
     # if uploaded_files:
@@ -78,23 +83,29 @@ def main():
     # Display UI elements
     display_mode(mode_text)
     display_conversation(st.session_state.conversation)
-    display_relevant(st.session_state.conversation)
     toggle_knowledge_base(st.session_state.use_knowledge_base)
+
+    # Display relevant document sections in the sidebar
+    if st.session_state.latest_result:
+        display_relevant([st.session_state.latest_result], sidebar_container)
+    else:
+        with sidebar_container:
+            st.write("Relevant Document Sections")
 
     # Render input form in the main flow
     query, submitted = render_input_form(st.session_state.input_key)
     if submitted and query:
+        # Clear the sidebar immediately when a new question is submitted
+        with sidebar_container:
+            st.write("Relevant Document Sections")
+            st.write("Processing new query...")
         result = process_query(query, llm, qa_chain, st.session_state.use_knowledge_base)
         if result:
-            st.session_state.conversation.append(
-                (
-                    query, 
-                    result["answer"], 
-                    result["source_documents"], 
-                    result["snapshots"]
-                    )
-            )
+            latest_entry = (query, result["answer"], result["source_documents"], result["snapshots"])
+            st.session_state.conversation.append(latest_entry)
 
+            # Generate PDF snapshot if using knowledge base
+            st.session_state.latest_result = latest_entry
             st.session_state.input_key += 1
             st.rerun()
 
