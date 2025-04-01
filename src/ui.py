@@ -13,14 +13,11 @@ def display_mode(mode_text):
 
 def display_relevant(latest_result, container):
     """
-    Display relevant document sections in the sidebar.
+    Display the relevant document sections in the sidebar.
 
     Args:
-        conversation (list): List of tuples containing query, answer, source_docs, and snapshots.
-        container (st.container): The Streamlit container to display the relevant sections.
-    
-    returns:
-        None
+        latest_result (list): List of tuples containing query, answer, source_docs, and snapshots.
+        container (st.container): Streamlit container to display the relevant sections.
     """
     with container:
         st.write("Relevant Document Sections")
