@@ -42,7 +42,8 @@ def main():
         #       },
         #       ...
         #   ]
-        # )
+        # ),
+        # ...
         st.session_state.conversation = []
     if "input_key" not in st.session_state: # To manage the input form key
         st.session_state.input_key = 0
