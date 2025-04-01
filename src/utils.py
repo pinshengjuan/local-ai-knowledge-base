@@ -41,7 +41,7 @@ def load_config():
 # Custom prompt for penalty-related questions
 def get_prompt(prompt_instruction):
     """
-    Generate a custom prompt for penalty-related questions.
+    Create a prompt template for the LLM.
 
     Args:
         prompt_instruction (str): The instruction for the prompt.
