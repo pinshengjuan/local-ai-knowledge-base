@@ -11,7 +11,7 @@ def display_mode(mode_text):
     """
     st.write(f"**Mode:** {mode_text}")
 
-def display_relevant(conversation, container):
+def display_relevant(latest_result, container):
     """
     Display relevant document sections in the sidebar.
 
@@ -24,11 +24,11 @@ def display_relevant(conversation, container):
     """
     with container:
         st.write("Relevant Document Sections")
-        if not conversation:
+        if not latest_result:
             st.write("No relevant sections yet.")
             return
 
-    for item in conversation:
+    for item in latest_result:
         # Unpack the tuple: ignore prompt and answer, take source_docs and snapshots
         _, _, source_docs, snapshots = item  # Use _ for unused variables
         if snapshots:
