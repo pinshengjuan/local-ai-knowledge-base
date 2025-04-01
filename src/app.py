@@ -49,8 +49,8 @@ def main():
         st.session_state.input_key = 0
     if "use_knowledge_base" not in st.session_state: # To toggle between LLM and knowledge base
         st.session_state.use_knowledge_base = True
-    if "latest_result" not in st.session_state:  # To store the latest result for sidebar display
-        st.session_state.latest_result = None
+    if "sidebar_latest_result" not in st.session_state:  # To store the latest result for sidebar display
+        st.session_state.sidebar_latest_result = None
 
     # Load LLM and setup chain
     llm = init_llm(config["OLLAMA_HOST"], config["MODEL_NAME"])
@@ -87,8 +87,8 @@ def main():
     toggle_knowledge_base(st.session_state.use_knowledge_base)
 
     # Display relevant document sections in the sidebar
-    if st.session_state.latest_result:
-        display_relevant([st.session_state.latest_result], sidebar_container)
+    if st.session_state.sidebar_latest_result:
+        display_relevant([st.session_state.sidebar_latest_result], sidebar_container)
     else:
         with sidebar_container:
             st.write("Relevant Document Sections")
@@ -102,11 +102,11 @@ def main():
             st.write("Processing new query...")
         result = process_query(query, llm, qa_chain, st.session_state.use_knowledge_base)
         if result:
-            latest_entry = (query, result["answer"], result["source_documents"], result["snapshots"])
-            st.session_state.conversation.append(latest_entry)
+            current_conversation_entry = (query, result["answer"], result["source_documents"], result["snapshots"])
+            st.session_state.conversation.append(current_conversation_entry)
 
             # Generate PDF snapshot if using knowledge base
-            st.session_state.latest_result = latest_entry
+            st.session_state.sidebar_latest_result = current_conversation_entry
             st.session_state.input_key += 1
             st.rerun()
 
