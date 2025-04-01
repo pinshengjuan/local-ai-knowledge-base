@@ -27,3 +27,6 @@ services:
     environment:
       - OLLAMA_HOST=http://ollama:11434
       - FILES_DIR=./documents
+      - MODEL_NAME=${MODEL_NAME}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL}
+      - PROMPT_INSTRUCTION=${PROMPT_INSTRUCTION}
